@@ -1,5 +1,9 @@
-#!/usr/bin/env python3
-uppercase = __import__('8-uppercase').uppercase
-
-uppercase("hola esta es una prueba larga de 123456 caraacCteres")
-uppercase("azAZ`{")
+#!/usr/bin/python3
+def uppercase(str):
+    for i in range(0, len(str)):
+        if (ord(str[i]) < 97 or ord(str[i]) > 122):
+            upper_character = str[i]
+        else:
+            upper_character = chr(ord(str[i]) - 32)
+        print("{}".format(upper_character), end="")
+    print()

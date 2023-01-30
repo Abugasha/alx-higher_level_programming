@@ -1,95 +1,69 @@
 #!/usr/bin/python3
-""" This script solves the N-Queen problem"""
 
 
 import sys
 
 
-def check_moves(matrix, position_x, position_y):
-    """
-    This function checks if a position (x, y) has
-    has a 1 horizontal, vertical or diagonal
-    """
-    for x in range(len(matrix)):
-        for y in range(len(matrix[0])):
-            # Si hay un 1 horizontal
-            if (matrix[x][position_y] == 1):
-                return(0)
-            # Si hay un 1 vertical
-            if (matrix[position_x][y] == 1):
-                return(0)
-            # Si hay un 1 diagonal abajo a la derecha
-            try:
-                if (matrix[position_x + x][position_y + x] == 1):
-                    return(0)
-            except IndexError:
-                pass
-            try:
-                if (position_x - x >= 0):
-                    if (matrix[position_x - x][position_y + x] == 1):
-                        return(0)
-            except IndexError:
-                pass
-            try:
-                if (position_x - x >= 0 and position_y - x >= 0):
-                    if (matrix[position_x - x][position_y - x] == 1):
-                        return(0)
-            except IndexError:
-                pass
-            try:
-                if (position_y - x >= 0):
-                    if (matrix[position_x + x][position_y - x] == 1):
-                        return(0)
-            except IndexError:
-                pass
-    return(1)
+def printBoard(board):
+    if any(1 in x for x in board):
+        print([[idx, board[idx].index(1)] for idx, val in enumerate(board)])
 
 
-def put_coords(matrix, result):
-    """
-    This function print a pair of coords to result
-    """
-    for i in range(0, len(matrix)):
-        for j in range(0, len(matrix[0])):
-            if (matrix[i][j] == 1):
-                result[i][0] = i
-                result[i][1] = j
-    return result
+def isSafe(row, square, chessboard, N, diag):
+    if chessboard[row][square]:
+        return False
+    if square - diag >= 0 and chessboard[row][square - diag]:
+        return False
+    if square + diag < (N) and chessboard[row][square + diag]:
+        return False
+    if row == 0:
+        return True
+    return isSafe(row - 1, square, chessboard, N, diag + 1)
 
 
-def recursive_chess(matrix, columns):
-    """
-    This function checks for every queen
-    if there's a queen atacking if not print
-    the n queens position
-    """
-    if (columns == n):
-        result = [[0 for x in range(2)] for y in range(n)]
-        print(put_coords(matrix, result))
+def placeSquare(row, position, chessboard, N):
+    for square in range(position, N):
+        if 1 in chessboard[row]:
+            return 0
+        if not isSafe(row - 1, square, chessboard, N, 1):
+            continue
+        chessboard[row][square] = 1
         return
+    return 1
 
-    for row in range(n):
-        if (check_moves(matrix, row, columns) == 1):
-            matrix[row][columns] = 1
-            recursive_chess(matrix, columns + 1)
-            matrix[row][columns] = 0
+if len(sys.argv) != 2:
+    print("Usage: nqueens N")
+    sys.exit(1)
 
+N = sys.argv[1]
 
-if __name__ == '__main__':
+if not str.isdigit(N):
+    print("N must be a number")
+    sys.exit(1)
 
-    if len(sys.argv) != 2:
-        print("Usage: nqueens N")
-        sys.exit(1)
+N = int(N)
 
-    try:
-        n = int(sys.argv[1])
-    except ValueError:
-        print("N must be a number")
-        sys.exit(1)
+if N < 4:
+    print("N must be at least 4")
+    sys.exit(1)
 
-    if n < 4:
-        print("N must be at least 4")
-        sys.exit(1)
+queen = 0
 
-    matrix = [[0 for j in range(n)] for i in range(n)]
-    recursive_chess(matrix, 0)
+while queen != N:
+    chessboard = [[0 for x in range(N)] for x in range(N)]
+    chessboard[0][queen] = 1
+    position = 0
+    row = 1
+    while row < N:
+        if placeSquare(row, position, chessboard, N):
+            row -= 1
+            position = chessboard[row].index(1)
+            chessboard[row][position] = 0
+            position += 1
+            if not row:
+                break
+        else:
+            row += 1
+            position = 0
+    printBoard(chessboard)
+    queen += 1

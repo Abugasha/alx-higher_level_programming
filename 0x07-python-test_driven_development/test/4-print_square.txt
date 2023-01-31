@@ -1,0 +1,50 @@
+The ``4-print_square`` module
+======================
+
+Using ``print_square``
+-------------------
+
+This is the test file for the 4-print_square function
+``print_square`` from the ``4-print_square`` module:
+
+    >>> print_square = __import__('4-print_square').print_square
+
+No input:
+
+    >>> print_square(1)
+    #
+
+
+Succes:
+
+    >>> print_square(0)
+
+
+Negative number:
+
+    >>> print_square(-5)
+    Traceback (most recent call last):
+    ...
+    TypeError: size must be >= 0
+
+
+Float number:
+
+    >>> print_square(5.5)
+    Traceback (most recent call last):
+    ...
+    TypeError: size must be an integer
+
+Negative float:
+
+    >>> print_square(-5.5)
+    Traceback (most recent call last):
+    ...
+    TypeError: size must be an integer
+
+No number:
+
+    >>> print_square("a")
+    Traceback (most recent call last):
+    ...
+    TypeError: size must be an integer

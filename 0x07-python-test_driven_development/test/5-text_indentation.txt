@@ -1,0 +1,54 @@
+The ``5-text_indetation`` module
+======================
+
+Using ``text_indentation``
+-------------------
+
+This is the test file for the 5-text_indetation function
+``text_indentation`` from the ``5-text_indetation`` module:
+
+    >>> text_indentation = __import__('5-text_indentation').text_indentation
+
+Number as input:
+
+    >>> text_indentation(5)
+    Traceback (most recent call last):
+    ...
+    TypeError: text must be a string
+
+Text without special chars:
+
+    >>> text_indentation("Hello world how are you today")
+    Hello world how are you today
+
+    >>> text_indentation("Hello world. how are you today")
+    Hello world.
+    <BLANKLINE>
+    how are you today
+
+    >>> text_indentation("Never give up? Sure! never give up: just keep up.")
+    Never give up?
+    <BLANKLINE>
+    Sure! never give up:
+    <BLANKLINE>
+    just keep up.
+    <BLANKLINE>
+
+    >>> text_indentation("Hello world. how are you today")
+    Hello world.
+    <BLANKLINE>
+    how are you today
+
+    >>> text_indentation("Hello, world. how are you today:")
+    Hello, world.
+    <BLANKLINE>
+    how are you today:
+    <BLANKLINE>
+
+    >>> text_indentation("   ?   :   .   ")
+    ?
+    <BLANKLINE>
+    :
+    <BLANKLINE>
+    .
+    <BLANKLINE>

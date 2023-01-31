@@ -1,0 +1,121 @@
+The ``0-add_integer`` module
+======================
+
+Using ``add_integer``
+-------------------
+
+This is the test file for the 0-add_integer function
+``add_integer`` from the ``0-add_integer`` module:
+
+    >>> add_integer = __import__('0-add_integer').add_integer
+
+Zero argument test:
+    >>> add_integer()
+    Traceback (most recent call last):
+    ...
+    TypeError: add_integer() missing 1 required positional argument: 'a'
+
+One argument test:
+
+    >>> add_integer(0)
+    98
+    >>> add_integer(2)
+    100
+    >>> add_integer(102)
+    200
+
+Three arguments test:
+
+    >>> add_integer(0, 1, 2)
+    Traceback (most recent call last):
+    ...
+    TypeError: add_integer() takes from 1 to 2 positional arguments but 3 were given
+
+a data is float:
+
+    >>> add_integer(0.5, 1)
+    1
+    >>> add_integer(9.9, 10)
+    19
+
+b data is float:
+
+    >>> add_integer(2, 2.5)
+    4
+    >>> add_integer(100, 0.5)
+    100
+
+a and b are float:
+
+    >>> add_integer(2.9, 2.5)
+    4
+    >>> add_integer(0.5, 0.5)
+    0
+    >>> add_integer(100.3, -2)
+    98
+
+a is not int or float:
+
+    >>> add_integer('a', 5)
+    Traceback (most recent call last):
+        ...
+    TypeError: a must be an integer
+
+    >>> add_integer(True, 5)
+    Traceback (most recent call last):
+        ...
+    TypeError: a must be an integer
+
+    >>> add_integer(False, 5)
+    Traceback (most recent call last):
+        ...
+    TypeError: a must be an integer
+
+    >>> add_integer([2], 9)
+    Traceback (most recent call last):
+        ...
+    TypeError: a must be an integer
+
+b is not int or float:
+
+    >>> add_integer(2, '5')
+    Traceback (most recent call last):
+        ...
+    TypeError: b must be an integer
+    >>> add_integer(2, (2,2))
+    Traceback (most recent call last):
+        ...
+    TypeError: b must be an integer
+
+a and b are not int or float:
+
+    >>> add_integer([2], (2,2))
+    Traceback (most recent call last):
+        ...
+    TypeError: a must be an integer
+
+    >>> add_integer("hola", "chao")
+    Traceback (most recent call last):
+        ...
+    TypeError: a must be an integer
+
+Negative numbers:
+
+    >>> add_integer(-5, -5)
+    -10
+
+    >>> add_integer(-0.5, -5)
+    -5
+
+    >>> add_integer(-0.5, -0.5)
+    0
+
+    >>> add_integer(float('inf'), 5)
+    Traceback (most recent call last):
+        ...
+    OverflowError: cannot convert float infinity to integer
+
+    >>> add_integer(float('NaN'), 5)
+    Traceback (most recent call last):
+        ...
+    ValueError: cannot convert float NaN to integer

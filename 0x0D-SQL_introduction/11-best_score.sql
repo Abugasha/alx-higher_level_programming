@@ -1,0 +1,3 @@
+-- list tables of databases
+-- shows all fields of DATABASE
+SELECT score, name FROM second_table WHERE score >= 10 ORDER BY score DESC;

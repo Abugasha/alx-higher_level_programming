@@ -1,9 +1,7 @@
 #!/usr/bin/node
-if (process.argv.length <= 3) {
-  console.log(0);
+const MyInput = process.argv.slice(2).sort((a, b) => a - b);
+if (!isNaN(MyInput[1])) {
+  console.log(MyInput[MyInput.length - 2]);
 } else {
-  const args = process.argv.map(Number)
-    .slice(2, process.argv.length)
-    .sort((a, b) => a - b);
-  console.log(args[args.length - 2]);
+  console.log('0');
 }

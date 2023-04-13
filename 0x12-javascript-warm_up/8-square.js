@@ -1,9 +1,10 @@
 #!/usr/bin/node
-const sqr = process.argv[2];
-if (isNaN(sqr)) {
-  console.log('Missing size');
-} else {
-  for (let x = 0; x < sqr; x++) {
-    console.log('X'.repeat(sqr));
+if (!isNaN(process.argv[2])) {
+  const myVal = parseInt(process.argv[2]);
+  let i;
+  for (i = 0; i < myVal; i++) {
+    console.log('X'.repeat(myVal));
   }
+} else {
+  console.log('Missing size');
 }

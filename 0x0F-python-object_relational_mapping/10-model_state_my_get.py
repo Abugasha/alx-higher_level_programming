@@ -1,36 +1,20 @@
 #!/usr/bin/python3
-"""
-This file prints all states from the database
-"""
-
-import sys
-import sqlalchemy
-from model_state import State, Base
+# sqlalchemy stuff
 from sqlalchemy import create_engine
+from sqlalchemy import MetaData
 from sqlalchemy.orm import sessionmaker
-
-
-def main():
-    """
-    This file use a mysql search from python
-    """
-    db_user = sys.argv[1]
-    db_password = sys.argv[2]
-    db_name = sys.argv[3]
-    state_name = sys.argv[4]
-
-    engine = create_engine('mysql+mysqldb://{}:{}@localhost/{}'
-                           .format(db_user, db_password,
-                                   db_name), pool_pre_ping=True)
+from model_state import Base, State
+import sys
+if __name__ == "__main__":
+    engine = create_engine('mysql+mysqldb://{}:{}@localhost/{}'.format(
+        sys.argv[1], sys.argv[2], sys.argv[3]), pool_pre_ping=True)
     Base.metadata.create_all(engine)
     Session = sessionmaker(bind=engine)
     session = Session()
-    state = None
-    for state in session.query(State).filter(State.name.like(state_name)):
+    state = session.query(State).filter(
+        State.name == sys.argv[4]).first()
+    try:
         print("{}".format(state.id))
-    if (not state):
+    except:
         print("Not found")
     session.close()
-
-if __name__ == '__main__':
-    main()

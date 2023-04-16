@@ -1,23 +1,42 @@
 #!/usr/bin/python3
-# gets all CITIES
+"""
+This file prints all states from the database
+"""
+
+import sys
+import MySQLdb
 
 
-def main(args):
-    # gets all CITY stuff
-    if len(args) != 5:
-        raise Exception("need 4 arguments!")
-    db = MySQLdb.connect(host='localhost',
-                         user=args[1],
-                         passwd=args[2],
-                         db=args[3])
-    cur = db.cursor()
-    cur.execute("SELECT c.name FROM cities\
-            c JOIN states s ON s.id=c.state_id\
-            WHERE s.name=%s ORDER BY c.id", (args[4],))
-    states = cur.fetchall()
-    print(", ".join(map(lambda x: "%s" % x, states)))
+def main():
+    """
+    This file use a mysql search from python
+    """
+    db_user = sys.argv[1]
+    db_password = sys.argv[2]
+    db_name = sys.argv[3]
+    state_name = sys.argv[4]
 
-if __name__ == "__main__":
-    import sys
-    import MySQLdb
-    main(sys.argv)
+    # Open database connection
+    db = MySQLdb.connect(host="localhost", port=3306,
+                         user=db_user, passwd=db_password, db=db_name)
+    cursor = db.cursor()
+    # Use all the SQL you like
+    fl_state_name = MySQLdb.escape_string(state_name).decode()
+    sqlquery = ("""SELECT cities.name FROM cities JOIN states ON
+                states.id = cities.state_id
+                WHERE states.name
+                = '{}' ORDER BY cities.id""".format(fl_state_name))
+    cursor.execute(sqlquery)
+    data = cursor.fetchall()
+
+    for i in range(len(data)):
+        if (i != len(data) - 1):
+            print(data[i][0] + ", ", end="")
+        else:
+            print(data[i][0], end="")
+    print()
+    cursor.close()
+    db.close()
+
+if __name__ == '__main__':
+    main()

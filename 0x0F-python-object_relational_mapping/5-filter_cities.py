@@ -1,42 +1,22 @@
 #!/usr/bin/python3
-"""
-This file prints all states from the database
-"""
-
-import sys
-import MySQLdb
-
-
-def main():
-    """
-    This file use a mysql search from python
-    """
-    db_user = sys.argv[1]
-    db_password = sys.argv[2]
-    db_name = sys.argv[3]
-    state_name = sys.argv[4]
-
-    # Open database connection
-    db = MySQLdb.connect(host="localhost", port=3306,
-                         user=db_user, passwd=db_password, db=db_name)
-    cursor = db.cursor()
-    # Use all the SQL you like
-    fl_state_name = MySQLdb.escape_string(state_name).decode()
-    sqlquery = ("""SELECT cities.name FROM cities JOIN states ON
-                states.id = cities.state_id
-                WHERE states.name
-                = '{}' ORDER BY cities.id""".format(fl_state_name))
-    cursor.execute(sqlquery)
-    data = cursor.fetchall()
-
-    for i in range(len(data)):
-        if (i != len(data) - 1):
-            print(data[i][0] + ", ", end="")
-        else:
-            print(data[i][0], end="")
-    print()
-    cursor.close()
-    db.close()
+"""A script that takes in the name of
+a state as an argument and list * cities"""
 
 if __name__ == '__main__':
-    main()
+
+    import MySQLdb
+    import sys
+
+    db = MySQLdb.connect(host='localhost', port=3306,
+                         user=sys.argv[1], passwd=sys.argv[2], db=sys.argv[3])
+
+    cur = db.cursor()
+    cur.execute("SELECT cities.name\
+                FROM cities LEFT JOIN states\
+                ON states.id = cities.state_id\
+                WHERE states.name = %s\
+                ORDER BY cities.id ASC", (sys.argv[4],))
+    rows = cur.fetchall()
+    print(", ".join([row[0] for row in rows]))
+    cur.close()
+    db.close()

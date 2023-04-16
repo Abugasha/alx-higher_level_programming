@@ -1,35 +1,26 @@
 #!/usr/bin/python3
-"""
-This file prints all states from the database
-"""
+"""adds the State object “California”
+with the City “San Francisco”
+to the database hbtn_0e_100_usa"""
 
-import sys
-import sqlalchemy
-from relationship_state import State, Base
-from relationship_city import City
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
+if __name__ == "__main__":
 
+    import sys
+    from relationship_state import Base, State
+    from relationship_city import City
+    from sqlalchemy import create_engine
+    from sqlalchemy.orm import Session
+    from sqlalchemy.schema import Table
 
-def main():
-    """
-    This file use a mysql search from python
-    """
-    db_user = sys.argv[1]
-    db_password = sys.argv[2]
-    db_name = sys.argv[3]
     engine = create_engine('mysql+mysqldb://{}:{}@localhost/{}'
-                           .format(db_user, db_password,
-                                   db_name), pool_pre_ping=True)
+                           .format(sys.argv[1], sys.argv[2],
+                                   sys.argv[3]), pool_pre_ping=True)
     Base.metadata.create_all(engine)
-    Session = sessionmaker(bind=engine)
-    session = Session()
-    new_state = State(name="California")
-    new_city = City(name="San Francisco", state=new_state)
-    session.add(new_city)
+
+    session = Session(engine)
+    new_city = City(name='San Francisco')
+    new = State(name='California')
+    new.cities.append(new_city)
+    session.add_all([new, new_city])
     session.commit()
     session.close()
-
-if __name__ == '__main__':
-    main()

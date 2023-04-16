@@ -1,33 +1,20 @@
 #!/usr/bin/python3
-"""
-This file prints all states from the database
-"""
-
-import sys
-import MySQLdb
-
-
-def main():
-    """
-    This file use a mysql search from python
-    """
-    db_user = sys.argv[1]
-    db_password = sys.argv[2]
-    db_name = sys.argv[3]
-
-    # Open database connection
-    db = MySQLdb.connect(host="localhost", port=3306,
-                         user=db_user, passwd=db_password, db=db_name)
-    cursor = db.cursor()
-    # Use all the SQL you like
-    sqlquery = ("""SELECT cities.id, cities.name, states.name FROM states JOIN
-                cities ON states.id=cities.state_id ORDER BY cities.id ASC""")
-    cursor.execute(sqlquery)
-    data = cursor.fetchall()
-
-    for states in data:
-        print(states)
-    db.close()
+"""A script that lists all cities
+ from the database hbtn_0e_4_usa"""
 
 if __name__ == '__main__':
-    main()
+
+    import MySQLdb
+    import sys
+
+    db = MySQLdb.connect(host='localhost', port=3306,
+                         user=sys.argv[1], passwd=sys.argv[2], db=sys.argv[3])
+
+    cur = db.cursor()
+    cur.execute("SELECT cities.id, cities.name, states.name\
+                FROM cities LEFT JOIN states\
+                ON states.id = cities.state_id\
+                ORDER BY cities.id ASC")
+    rows = cur.fetchall()
+    for row in rows:
+        print(row)
